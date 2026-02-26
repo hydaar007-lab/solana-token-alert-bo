@@ -4,8 +4,8 @@ import os
 
 # -----------------------------
 # CONFIGURATION
-BOT_TOKEN = os.environ.get(8733379389:AAFX21XoAKv-TD0uLNnFLz0sl-yRpATDKk8)
-CHAT_ID = int(os.environ.get(-1003692871546)
+BOT_TOKEN = os.environ.get("BOT_TOKEN")  # Get bot token from environment
+CHAT_ID = int(os.environ.get("CHAT_ID"))  # Get chat ID from environment
 SEEN = set()
 CHAIN = "solana"  # Solana platform
 CHECK_INTERVAL = 60  # seconds
@@ -64,9 +64,3 @@ def check_new_tokens():
 # -----------------------------
 if __name__ == "__main__":
     print("Bot started. Monitoring new tokens...")
-    while True:
-        try:
-            check_new_tokens()
-        except Exception as e:
-            print("Error:", e)
-        time.sleep(CHECK_INTERVAL)
