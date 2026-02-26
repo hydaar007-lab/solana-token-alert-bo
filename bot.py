@@ -3,8 +3,8 @@ import time
 
 # -----------------------------
 # CONFIGURATION
-BOT_TOKEN = "YOUR_BOT_TOKEN"
-CHAT_ID = "YOUR_CHAT_ID"
+BOT_TOKEN = 8733379389:AAFX21XoAKv-TD0uLNnFLz0sl-yRpATDKk8
+CHAT_ID = -1003692871546
 SEEN = set()
 CHAIN = "solana"  # Solana platform
 # -----------------------------
