@@ -4,11 +4,11 @@ import os
 
 # -----------------------------
 # CONFIGURATION
-BOT_TOKEN = os.environ.get("BOT_TOKEN")  # Get bot token from environment
-CHAT_ID = int(os.environ.get("CHAT_ID"))  # Get chat ID from environment
+BOT_TOKEN = os.environ.get("BOT_TOKEN")
+CHAT_ID = int(os.environ.get("CHAT_ID"))
 SEEN = set()
-CHAIN = "solana"  # Solana platform
-CHECK_INTERVAL = 60  # seconds
+CHAIN = "solana"
+CHECK_INTERVAL = 60
 # -----------------------------
 
 def send_telegram(msg):
@@ -42,16 +42,21 @@ def check_new_tokens():
             if coin_id not in SEEN:
                 SEEN.add(coin_id)
 
-                # Get extra details
                 detail = get_coin_detail(coin_id)
                 links = detail.get("links", {})
                 homepage = links.get("homepage", ["Not Available"])[0]
+                telegram = links.get("telegram_channel_identifier", "Not Available")
+                twitter = links.get("twitter_screen_name", "Not Available")
 
-                # Build message
+                tg_link = f"https://t.me/{telegram}" if telegram != "Not Available" and telegram else "Not Available"
+                x_link = f"https://x.com/{twitter}" if twitter != "Not Available" and twitter else "Not Available"
+
                 message = (
                     f"🔔 *NEW TOKEN:* {coin['name']} `{contract_address[:6]}...{contract_address[-4:]}`\n"
                     f"⛓️ *Chain:* {CHAIN.upper()}\n\n"
                     f"🌐 *Website:* {homepage}\n"
+                    f"✈️ *Telegram:* {tg_link}\n"
+                    f"🐦 *Twitter (X):* {x_link}\n"
                     f"📊 *Chart:* https://dexscreener.com/{CHAIN}/{contract_address}\n"
                     f"📝 *Contract:* `{contract_address}`"
                 )
@@ -64,3 +69,10 @@ def check_new_tokens():
 # -----------------------------
 if __name__ == "__main__":
     print("Bot started. Monitoring new tokens...")
+    while True:
+        try:
+            check_new_tokens()
+        except Exception as e:
+            print(f"Error during check: {e}")
+        print(f"Sleeping {CHECK_INTERVAL}s...")
+        time.sleep(CHECK_INTERVAL)
